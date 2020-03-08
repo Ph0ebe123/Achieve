@@ -1,0 +1,97 @@
+import random 
+
+# These are the goals and steps I have already chosen
+myGoals = ['I want to get more sleep']
+mySteps = ['Go to sleep by ten tonight',
+           'Read a book before bed tonight',
+           'Go to sleep half an hour earlier than you did last night']
+todaySteps = []
+
+# These are the goals and steps that the AI algorithm would recommend, based on
+# what you and other users have chosen before. It only recommends ones that people
+# are more likely to achieve, so you are less likely to give up 
+suggestedGoals = ['I want to eat more healthily',
+                  'I want to lower my carbon footprint',
+                  'I want to get more excercise',
+                  'I want to be more organised with my homework']
+# I've used a dictionary with lists inside it, so for each goal there is a list of
+# possible steps
+suggestedSteps = {'I want to get more sleep':['Go to sleep by ten tonight', 'Read a book before bed tonight', 'Go to sleep half an hour earlier than you did last night'],
+                  'I want to eat more healthily':['Have a salad with your lunch today', 'Eat fruit for breakfast today', 'Drink plenty of water today'],
+                  'I want to lower my carbon footprint':['Walk or cycle to school today', 'Take your lunch in a re-usable container', 'Turn down the heating and wear a jumper'],
+                  'I want to get more excercise':['Walk or cycle to school today', 'Do a 5 minute run today', 'Do 20 squats today'],
+                  'I want to be more organised with my homework':['Do some homework as soon as you get home today', 'Do 10 minutes on each piece of homework you have', 'Make a list of all the homework you get today'], }
+
+print('Welcome to Achieve')
+
+# while True so that the program will keep running until you close it
+while True :
+    print()
+    # menu
+    print('1) See my goals')
+    print('2) See my steps')
+    print('3) Add a goal')
+    mode = int(input())
+
+    # lets you see what goals you already have
+    if mode == 1 :
+        if len(myGoals) == 0 :
+            print('You currently have no goals.')
+        else :
+            print('You currently have ' + str(len(myGoals)) + ' goals:')
+            for i in range (len(myGoals)) :
+                print(myGoals[i])
+
+    # lets you see your steps
+    elif mode == 2 :
+        print('1) See 3 steps')
+        print('2) See all steps')
+        choice = int(input())
+        # It chooses three random steps out of the list
+        if choice == 1 :
+            for i in range (3) :
+                print(mySteps[random.randrange(0, len(mySteps))])
+        # It shows you the whole list
+        elif choice == 2 :
+            for i in range (len(mySteps)) :
+                print(mySteps[i])
+
+    # lets you add a goal
+    elif mode == 3 :
+        # prints a menu of all the suggested goals plus an 'other' option
+        count = 1
+        for i in range (len(suggestedGoals)) :
+            print(str(count) + ') ' + suggestedGoals[i])
+            count += 1
+        print(str(count) + ') Other')
+        choice = int(input())
+        # you can add your own goal
+        if choice == count :
+            newGoal = input('New goal: ')
+            myGoals.append(newGoal)
+        # or choose one of the recommended goals
+        else :
+            newGoal = suggestedGoals[choice - 1]
+            del suggestedGoals[choice - 1]
+            myGoals.append(newGoal)
+            # lets you add as many steps as you want for that goal
+            print('Add some steps:')
+            more = 'y'
+            while more == 'y' :
+                # displays a menu of all the suggested steps for that goal plus 'other'
+                count = 1
+                for i in range (len(suggestedSteps[newGoal])) :
+                    print(str(count) + ') ' + suggestedSteps[newGoal][i])
+                    count += 1
+                print(str(count) + ') Other')
+                choice = int(input())
+                if choice == count :
+                    newStep = input('New step: ')
+                else :
+                    newStep = suggestedSteps[newGoal][choice - 1]
+                # some steps apply to more than one goal
+                # so it won't add the step if it already in 'mySteps'
+                if not(newStep in mySteps) :
+                    mySteps.append(newStep)
+                more = input('Would you like to add another step? y/n ')
+
